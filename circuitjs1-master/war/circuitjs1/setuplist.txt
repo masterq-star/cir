@@ -431,4 +431,7 @@ varactorvco.txt VCO
 ledarray.txt LED Array
 triacdimmer.txt DIAC/TRIAC Dimmer
 -
++HB SIMULATOR
+hbecu1.txt ECU đánh lửa
+-
 blank.txt Blank Circuit

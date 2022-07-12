@@ -239,6 +239,7 @@ public abstract class CircuitElm implements Editable {
 	lead1 = interpPoint(point1, point2, (dn-len)/(2*dn));
 	lead2 = interpPoint(point1, point2, (dn+len)/(2*dn));
     }
+   
 
     // calculate point fraction f between a and b, linearly interpolated
     Point interpPoint(Point a, Point b, double f) {

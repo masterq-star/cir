@@ -27,7 +27,7 @@ class CKPSenSor extends RailElm  {
 	double getVoltage() {
 	    double f = 5000/(slider.getValue());
 	    if(sim.t%(numberofcycle*(1/f)) < (1/f)) return 0;
-	    double fm = amplitude*Math.sin(2*pi*sim.t*f);
+	    double fm = amplitude*Math.sin(2*pi*sim.t*f+pi/4);
 //	    return Math.sin(2*pi*sim.t*3000)*(1.3+Math.sin(2*pi*sim.t*12))*3 +
 //	           Math.sin(2*pi*sim.t*2710)*(1.3+Math.sin(2*pi*sim.t*13))*3 +
 //		   Math.sin(2*pi*sim.t*2433)*(1.3+Math.sin(2*pi*sim.t*14))*3 + fm;

@@ -19,6 +19,7 @@
 
 package com.lushprojects.circuitjs1.client;
 
+import com.google.gwt.core.client.GWT;
 
 class OpAmpElm extends CircuitElm {
 	int opsize, opheight, opwidth, opaddtext;
@@ -82,6 +83,7 @@ class OpAmpElm extends CircuitElm {
 	    drawThickLine(g, lead2, point2);
 	    g.setColor(needsHighlight() ? selectColor : lightGrayColor);
 	    setPowerColor(g, true);
+	    //drawThickLine(g, point1, point2);
 	    drawThickPolygon(g, triangle);
 	    g.setFont(plusFont);
 	    drawCenteredText(g, "-", textp[0].x, textp[0].y-2, true);
@@ -116,7 +118,7 @@ class OpAmpElm extends CircuitElm {
 	    textp = newPointArray(2);
 	    interpPoint2(point1, point2, in1p[0],  in2p[0], 0, hs);
 	    interpPoint2(lead1 , lead2,  in1p[1],  in2p[1], 0, hs);
-	    interpPoint2(lead1 , lead2,  textp[0], textp[1], .2, hs);
+	    interpPoint2(lead1 , lead2,  textp[0], textp[1], 0.2, hs);
 	    Point tris[] = newPointArray(2);
 	    interpPoint2(lead1,  lead2,  tris[0], tris[1],  0, hs*2);
 	    triangle = createPolygon(tris[0], tris[1], lead2);
@@ -164,7 +166,7 @@ class OpAmpElm extends CircuitElm {
 		x = minOut - dx*minOut/gain;
 	    } else
 		dx = gain;
-	   // GWT.log("opamp " + vd + " " + volts[2] + " " + dx + " "  + x + " " + lastvd + " " + sim.converged);
+	    //GWT.log("opamp " + vd + " " + volts[2] + " " + dx + " "  + x + " " + lastvd + " " + sim.converged +"  "+ voltSource+"   ");
 	    
 	    // newton-raphson
 	    sim.stampMatrix(vn, nodes[0], dx);

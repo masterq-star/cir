@@ -608,10 +608,10 @@ MouseOutHandler, MouseWheelHandler {
 	});
 
 	
-	dumpMatrixButton = new Button("Dump Matrix");
-	dumpMatrixButton.addClickHandler(new ClickHandler() {
-	    public void onClick(ClickEvent event) { dumpMatrix = true; }});
-	verticalPanel.add(dumpMatrixButton);// IES for debugging
+//	dumpMatrixButton = new Button("Dump Matrix");
+//	dumpMatrixButton.addClickHandler(new ClickHandler() {
+//	    public void onClick(ClickEvent event) { dumpMatrix = true; }});
+//	verticalPanel.add(dumpMatrixButton);// IES for debugging
 	
 
 	if (LoadFile.isSupported())
@@ -1057,6 +1057,8 @@ MouseOutHandler, MouseWheelHandler {
     	MenuBar hbsimulator = new MenuBar(true);
     	hbsimulator.addItem(getClassCheckItem(LS("ADD CKP"), "CKPSenSor"));
     	hbsimulator.addItem(getClassCheckItem(LS("ADD CKP 2 TERMINAL"), "CKPElm"));
+    	hbsimulator.addItem(getClassCheckItem(LS("ADD CMP 2 TERMINAL"), "CMPElm"));
+    	hbsimulator.addItem(getClassCheckItem(LS("ADD THW 2 TERMINAL"), "THWSensor"));
     	hbsimulator.addItem(getClassCheckItem(LS("ADD ECU"), "ECUElm"));
     	
     	mainMenuBar.addItem(SafeHtmlUtils.fromTrustedString(CheckboxMenuItem.checkBoxHtml+LS("&nbsp;</div>Hb Simulator")), hbsimulator);
@@ -1475,15 +1477,15 @@ MouseOutHandler, MouseWheelHandler {
 	    stopElm.setMouseElm(false);
 	frames++;
 	
-	g.setColor(Color.white);
-	g.drawString("Framerate: " + CircuitElm.showFormat.format(framerate), 10, 10);
-	g.drawString("Steprate: " + CircuitElm.showFormat.format(steprate),  10, 30);
-	g.drawString("Steprate/iter: " + CircuitElm.showFormat.format(steprate/getIterCount()),  10, 50);
-	g.drawString("iterc: " + CircuitElm.showFormat.format(getIterCount()),  10, 70);
-	g.drawString("Frames: "+ frames,10,90);
-	g.drawString("ms per frame (other): "+ CircuitElm.showFormat.format((mytime-myruntime-mydrawtime)/myframes),10,110);
-	g.drawString("ms per frame (sim): "+ CircuitElm.showFormat.format((myruntime)/myframes),10,130);
-	g.drawString("ms per frame (draw): "+ CircuitElm.showFormat.format((mydrawtime)/myframes),10,150);
+//	g.setColor(Color.white);
+//	g.drawString("Framerate: " + CircuitElm.showFormat.format(framerate), 10, 10);
+//	g.drawString("Steprate: " + CircuitElm.showFormat.format(steprate),  10, 30);
+//	g.drawString("Steprate/iter: " + CircuitElm.showFormat.format(steprate/getIterCount()),  10, 50);
+//	g.drawString("iterc: " + CircuitElm.showFormat.format(getIterCount()),  10, 70);
+//	g.drawString("Frames: "+ frames,10,90);
+//	g.drawString("ms per frame (other): "+ CircuitElm.showFormat.format((mytime-myruntime-mydrawtime)/myframes),10,110);
+//	g.drawString("ms per frame (sim): "+ CircuitElm.showFormat.format((myruntime)/myframes),10,130);
+//	g.drawString("ms per frame (draw): "+ CircuitElm.showFormat.format((mydrawtime)/myframes),10,150);
 	
 	cvcontext.drawImage(backcontext.getCanvas(), 0.0, 0.0);
 	
@@ -2186,7 +2188,7 @@ MouseOutHandler, MouseWheelHandler {
 	    /*System.out.println("row " + i + " " + re.lsChanges + " " + re.rsChanges + " " +
 			       re.dropRow);*/
 	    
-//	    if (qp != -100) continue;   // uncomment this line to disable matrix simplification for debugging purposes
+	    //if (qp != -100) continue;   // uncomment this line to disable matrix simplification for debugging purposes
 	    
 	    if (re.lsChanges || re.dropRow || re.rsChanges)
 		continue;
@@ -5243,6 +5245,8 @@ MouseOutHandler, MouseWheelHandler {
 	case 416: return new MBBSwitchElm(x1, y1, x2, y2, f, st);
 	case 417: return new CKPSenSor(x1,y1,x2,y2,f,st);
 	case 418: return new CKPElm(x1, y1, x2, y2,f , st);
+	case 419: return new CMPElm(x1, y1, x2, y2, f, st);
+	case 420: return new THWSensor(x1, y1, x2, y2, f, st);
         }
     	return null;
     }
@@ -5497,8 +5501,12 @@ MouseOutHandler, MouseWheelHandler {
     	    return (CircuitElm) new CKPSenSor(x1, y1);
     	if(n=="CKPElm")
     	    return (CircuitElm) new CKPElm(x1, y1);
+    	if(n=="CMPElm")
+    	    return (CircuitElm) new CMPElm(x1, y1);
     	if(n=="ECUElm")
     	    return (CircuitElm) new ECUElm(x1, y1);
+    	if(n=="THWSensor")
+    	    return (CircuitElm) new THWSensor(x1, y1);
     	
     	
     	return null;
