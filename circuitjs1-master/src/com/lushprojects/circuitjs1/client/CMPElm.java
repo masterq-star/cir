@@ -66,9 +66,9 @@ class CMPElm extends VoltageElm{
 		    }
 		}
 	 void createSlider() {
-	    	sim.addWidgetToVerticalPanel(label = new Label("CMP SENSOR"));
+	    	sim.addWidgetToVerticalPanel(label = new Label("Tốc độ xung CMP"));
 	    	label.addStyleName("topSpace");
-	    	sim.addWidgetToVerticalPanel(slider = new Scrollbar(Scrollbar.HORIZONTAL, 50, 1, 10, 100));
+	    	sim.addWidgetToVerticalPanel(slider = new Scrollbar(Scrollbar.HORIZONTAL, 50, 1, 10, 90));
 	   // 	sim.verticalPanel.validate();
 	   // 	slider.addAdjustmentListener(this);
 	    }

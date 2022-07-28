@@ -35,7 +35,10 @@ public class CheckEcu extends PopupPanel {
     VerticalPanel vp;
 	Button okButton;
 	
-	CheckEcu(Double vIGSW , Double vBATT , Boolean NE, Boolean G , Double vTHW , Double vVTA) {
+	CheckEcu(Double vIGSW , Double vBATT 
+		, Boolean NE, Boolean G ,Boolean vss,
+		Boolean knk,
+		Double vTHW , Double vVTA) {
 		super();
 		vp = new VerticalPanel();
 		setWidget(vp);
@@ -43,8 +46,10 @@ public class CheckEcu extends PopupPanel {
 			check_batt = vBATT >4.5 ? "OK":"ERROR",
 			checkckp = NE ? "OK":"ERROR",
 			checkcmp= G ? "OK":"ERROR",
-			checkthw = vTHW <2.5 ? "OK":"ERROR",
-			checkvta= vVTA >0 ? "OK":"ERROR";
+			checkthw = vTHW <6&& vTHW>0.1 ? "OK":"ERROR",
+			checkvta= vVTA >0 ? "OK":"ERROR",
+			checkvss = vss?"OK":"ERROR",
+				checkknk = knk ? "OK":"ERROR";
 		
 //Mod.Begin
 		vp.setWidth("500px");
@@ -65,11 +70,11 @@ public class CheckEcu extends PopupPanel {
 			+ "<tr><td class='td'>CẢM BIẾN CMP</td><td class='td'>"+String.valueOf(G)+"</td><td class='td'>"+checkcmp+"</td></tr>"
 			+ "<tr><td class='td'>CẢM BIẾN THW</td><td class='td'>"+String.valueOf(vTHW)+"</td><td class='td'>"+checkthw+"</td></tr>"
 			+ "<tr><td class='td'>CẢM BIẾN TPS</td><td class='td'>"+String.valueOf(vVTA)+"</td><td class='td'>"+checkvta+"</td></tr>"
+			+ "<tr><td class='td'>CẢM BIẾN VSS</td><td class='td'>"+String.valueOf(vss)+"</td><td class='td'>"+checkvss+"</td></tr>"
+			+ "<tr><td class='td'>CẢM BIẾN KNK</td><td class='td'>"+String.valueOf(knk)+"</td><td class='td'>"+checkknk+"</td></tr>"
 			+ "</table>"
 			+ "</body>";
-		String code_css = "<head><style>table {font-family: arial, sans-serif;border-collapse: collapse;width: 100%;}"
-			+ "td, th {border: 1px solid #dddddd;text-align: left;padding: 8px;}"
-			+ "</style></head>";
+		
                 //vp.add(new HTML(code_css));
 		vp.add(new HTML(code_html));
 		

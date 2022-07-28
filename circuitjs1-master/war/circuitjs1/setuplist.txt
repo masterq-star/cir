@@ -433,5 +433,23 @@ triacdimmer.txt DIAC/TRIAC Dimmer
 -
 +HB SIMULATOR
 hbecu1.txt ECU đánh lửa
+hbecu2.txt ECU đánh lửa2
+-
++ Lab Mô phỏng chức năng
+hbswitch.txt Mô tả chức năng của khóa điện, Công tắc
+hbrelay.txt Mô tả chức năng của relay
+hbfuse.txt Mô tả chức năng cầu chì
+hbpowerecu.txt Mạch Nguồn cho ECU
+hbckpcmp.txt Cảm biến CMP CKP
+hbthwtpsvss.txt Cảm biến THW TPS VSS
+-
++ Lab Thực hành đấu nối
+hbswitchlab.txt Thực hành đấu nối Công tắc
+hbrelaylab.txt thực hành đấu nối relay
+hbfuselab.txt thực hành đấu nối cầu chì
+hbpowereculab.txt Thực hành đấu nối mạch nguồn
+hbckpcmplab.txt Thực Hành Đấu nối cảm biến CMP CKP
+hbthwtpsvsslab.txt Thực Hành Đấu nối cảm biến THW TPS VSS
+hballbeforelab.txt Thực hành tổng hợp 1
 -
 blank.txt Blank Circuit

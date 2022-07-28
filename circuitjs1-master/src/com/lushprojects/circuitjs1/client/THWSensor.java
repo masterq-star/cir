@@ -126,7 +126,7 @@ class THWSensor extends CircuitElm {
 	        super.delete();
 	    }
 	void createSlider() {
-	    sim.addWidgetToVerticalPanel(label = new Label("THW"));
+	    sim.addWidgetToVerticalPanel(label = new Label("Nhiệt độ cảm biến THW"));
 	    	label.addStyleName("topSpace");
 	    	sim.addWidgetToVerticalPanel(slider = new Scrollbar(Scrollbar.HORIZONTAL, 20, 1, 1, 100));
 	   // 	sim.verticalPanel.validate();

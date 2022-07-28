@@ -917,6 +917,10 @@ public abstract class CircuitElm implements Editable {
 	    (x == Scope.VAL_POWER) ? Scope.UNITS_W : Scope.UNITS_V;
     }
     public EditInfo getEditInfo(int n) { return null; }
+    public Boolean checkInfor(){return false;}
+    public String CodeHtml(){
+	return "";
+    }
     public void setEditValue(int n, EditInfo ei) {}
     
     // get number of nodes that can be retrieved by getConnectionNode()

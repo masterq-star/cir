@@ -508,6 +508,16 @@ class RelayElm extends CircuitElm {
     boolean getConnection(int n1, int n2) {
 	return (n1 / 3 == n2 / 3);
     }
+    public Boolean checkInfor(){return true;}
+    String codeHtmlString = "<div style='overflow-y: scroll; height:400px;'>"
+    	+ "<img src='https://3ce.vn/wp-content/uploads/2020/02/cac-dang-relay-cong-nghiep.jpg' alt='ECU' height='300'>"
+    	+ "<h3>Rơ le là gì?</h3>"
+    	+ "<p>Rơ le (relay) là một chuyển mạch hoạt động bằng điện. Dòng điện chạy qua cuộn dây của rơ-le tạo ra một từ trường hút lõi sắt non làm thay đổi công tắc chuyển mạch. Dòng điện qua cuộn dây có thể được bật hoặc tắt, vì thế rơ-le có hai vị trí chuyển mạch qua lại.</p>"
+    	+"<p>Rơ le được sử dụng phổ biến ở các bo mạch điều khiển tự động, chuyên dụng để đóng cắt những cái dòng điện lớn mà những hệ thống mạch điều khiển không thể trực tiếp can thiệp thì người ta sẽ sử dụng rơ le để đóng cắt dòng điện cao. rơ le có rất nhiều hình dáng và kích thước và chân cắm khác nhau.</p>"
+    	+ "</div>";
+    public String CodeHtml(){
+	return codeHtmlString;
+    }
     
     int getShortcut() { return 'R'; }
 }

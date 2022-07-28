@@ -36,6 +36,7 @@ public class Color
     public final static Color magenta = new Color(255, 0, 255);
     public final static Color cyan = new Color(0, 255, 255);
     public final static Color blue = new Color(0, 0, 255);
+    public final static Color background_customcolor = new Color(0, 159,117);
     public static final Color NONE = new Color("");
     
     private int r, g, b;

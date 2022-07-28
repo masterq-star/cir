@@ -1,4 +1,14 @@
 eclipse.preferences.version=1
+encoding//src/com/lushprojects/circuitjs1/client/CKPElm.java=UTF-8
+encoding//src/com/lushprojects/circuitjs1/client/CMPElm.java=UTF-8
 encoding//src/com/lushprojects/circuitjs1/client/CheckEcu.java=UTF-8
+encoding//src/com/lushprojects/circuitjs1/client/CkpSquare.java=UTF-8
+encoding//src/com/lushprojects/circuitjs1/client/CmpSin.java=UTF-8
 encoding//src/com/lushprojects/circuitjs1/client/ECUElm.java=UTF-8
+encoding//src/com/lushprojects/circuitjs1/client/ECUElm2.java=UTF-8
+encoding//src/com/lushprojects/circuitjs1/client/KnkElm.java=UTF-8
+encoding//src/com/lushprojects/circuitjs1/client/MapSensor.java=UTF-8
+encoding//src/com/lushprojects/circuitjs1/client/OxySensor.java=UTF-8
+encoding//src/com/lushprojects/circuitjs1/client/RelayElm.java=UTF-8
+encoding//src/com/lushprojects/circuitjs1/client/THWSensor.java=UTF-8
 encoding//war/circuitjs.html=UTF-8

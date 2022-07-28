@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.Label;
 class ECUElm extends CircuitElm implements ClickHandler{
 	int opsize, opheight, opwidth, opaddtext;
 	static CheckEcu checkecubox;
+	boolean outputvalve;
 	Button checkecubutton;
 	Label label;
 	final int BATT = 8;
@@ -42,10 +43,20 @@ class ECUElm extends CircuitElm implements ClickHandler{
 	final int GND=11;
 	final int BPLUS = 6;
 	final int MREL = 4;
-	final int IGT3 = 12;
-	final int IGT2 = 13;
-	final int IGT4 = 14;
-	final int IGT1 = 15;
+	final int IGT3 = 20;
+	final int IGT2 = 18;
+	final int IGT4 = 22;
+	final int IGT1 = 16;
+	final int GNDVSS = 14;
+	final int OUTVSS = 12;
+	final int VCCVSS = 13;
+	final int EKNK=15;
+	final int KNK1=17;
+	final int GND2=19;
+	final int RSD=21;
+	final int BPLUSIDL=23;
+	final int IGF =24;
+	
 	
 	boolean reset;
 	final int FLAG_SWAP = 1;
@@ -85,6 +96,14 @@ class ECUElm extends CircuitElm implements ClickHandler{
 		volts[14] = new Double(st.nextToken()).doubleValue();
 		volts[15] = new Double(st.nextToken()).doubleValue();
 		volts[16] = new Double(st.nextToken()).doubleValue();
+		volts[17] = new Double(st.nextToken()).doubleValue();
+		volts[18] = new Double(st.nextToken()).doubleValue();
+		volts[19] = new Double(st.nextToken()).doubleValue();
+		volts[20] = new Double(st.nextToken()).doubleValue();
+		volts[21] = new Double(st.nextToken()).doubleValue();
+		volts[22] = new Double(st.nextToken()).doubleValue();
+		volts[23] = new Double(st.nextToken()).doubleValue();
+		volts[24] = new Double(st.nextToken()).doubleValue();
 	    } catch (Exception e) {
 	    }
 	    noDiagonal = true;
@@ -92,7 +111,12 @@ class ECUElm extends CircuitElm implements ClickHandler{
 	}
 	String dump() {
 	    flags |= FLAG_GAIN;
-	    return super.dump() + " " + volts[0] + " " + volts[1] + " "+ volts[2]+ " "+volts[3] + " "+ volts[4]+ " " + volts[5] + " "+ volts[6]+ " "+volts[7] + " "+ volts[8] + " "+ volts[9]+ " " + volts[10] + " "+ volts[11]+ " "+volts[12]+ " "+ volts[13]+ " " + volts[14] + " "+ volts[15]+ " "+volts[16]  ;
+	    return super.dump() + " " + volts[0] + " " + volts[1] + " "+ volts[2]+ " "+volts[3] + " "+ volts[4]+
+		    " " + volts[5] + " "+ volts[6]+ " "+
+	    volts[7] + " "+ volts[8] + " "+ volts[9]+ " " + volts[10] +
+	    " "+ volts[11]+ " "+volts[12]+ " "+ volts[13]+ " " + volts[14] + " "+ volts[15]+ " "+volts[16] 
+		    + " "+volts[17]+ " "+ volts[18]+ " " + volts[19] + " "+ volts[20]+ " "+volts[21]
+			    + " "+ volts[22]+ " " + volts[23] + " "+ volts[24];
 	}
 	boolean nonLinear() { return true; }
 	void draw(Graphics g) {
@@ -133,6 +157,22 @@ class ECUElm extends CircuitElm implements ClickHandler{
 	    drawThickLine(g, out3p[0], out3p[1]);
 	    setVoltageColor(g, volts[16]);
 	    drawThickLine(g, out4p[0], out4p[1]);
+	    setVoltageColor(g, volts[17]);
+	    drawThickLine(g, out5p[0], out5p[1]);
+	    setVoltageColor(g, volts[18]);
+	    drawThickLine(g, out6p[0], out6p[1]);
+	    setVoltageColor(g, volts[19]);
+	    drawThickLine(g, out7p[0], out7p[1]);
+	    setVoltageColor(g, volts[20]);
+	    drawThickLine(g, out8p[0], out8p[1]);
+	    setVoltageColor(g, volts[21]);
+	    drawThickLine(g, out9p[0], out9p[1]);
+	    setVoltageColor(g, volts[22]);
+	    drawThickLine(g, out10p[0], out10p[1]);
+	    setVoltageColor(g, volts[23]);
+	    drawThickLine(g, out11p[0], out11p[1]);
+	    setVoltageColor(g, volts[24]);
+	    drawThickLine(g, out12p[0], out12p[1]);
 	    
 	    g.setColor(needsHighlight() ? selectColor : lightGrayColor);
 	    setPowerColor(g, true);
@@ -152,11 +192,21 @@ class ECUElm extends CircuitElm implements ClickHandler{
 	    drawCenteredText(g, "VTA", textp5[1].x, textp5[1].y  , true);
 	    drawCenteredText(g, "IGSW", textp6[0].x, textp6[0].y, true);
 	    drawCenteredText(g, "GND", textp6[1].x, textp6[1].y  , true);
-	    drawCenteredText(g, "IGT 2", textp7[0].x, textp7[0].y, true);
-	    drawCenteredText(g, "IGT 4", textp7[1].x, textp7[1].y  , true);
-	    drawCenteredText(g, "IGT 1", textp8[0].x, textp8[0].y, true);
-	    drawCenteredText(g, "E1", textp8[1].x, textp8[1].y  , true);
-	    drawCenteredText(g, "IGT 3", texto3[0].x, texto3[0].y  , true);
+	    drawCenteredText(g, "5V", textp7[0].x, textp7[0].y, true);
+	    drawCenteredText(g, "GND", textp7[1].x, textp7[1].y  , true);
+	    drawCenteredText(g, "EKNK", textp8[0].x, textp8[0].y, true);
+	    drawCenteredText(g, "IGT 1", textp8[1].x, textp8[1].y  , true);
+	    
+	    
+	    drawCenteredText(g, "KNK1", textp9[0].x, textp9[0].y, true);
+	    drawCenteredText(g, "IGT 2", textp9[1].x, textp9[1].y  , true);
+	    drawCenteredText(g, "GND", textp10[0].x, textp10[0].y, true);
+	    drawCenteredText(g, "IGT 3", textp10[1].x, textp10[1].y  , true);
+	    drawCenteredText(g, "RSD", textp11[0].x, textp11[0].y, true);
+	    drawCenteredText(g, "IGT 4", textp11[1].x, textp11[1].y  , true);
+	    drawCenteredText(g, "B+", textp12[0].x, textp12[0].y, true);
+	    drawCenteredText(g, "IGF", textp12[1].x, textp12[1].y  , true);
+	    drawCenteredText(g, "SPD", texto3[0].x, texto3[0].y  , true);
 	    g.setFont(lablefont);
 	    drawCenteredText(g, "ECU", lable[0].x,lable[0].y  , true);
 	    curcount = updateDotCount(current, curcount);
@@ -167,7 +217,10 @@ class ECUElm extends CircuitElm implements ClickHandler{
 	Point in1p[], in2p[],in3p[], in4p[],in5p[], in6p[] ,
 	in7p[], in8p[],in9p[], in10p[],in11p[], in12p[] ,
 	textp[],lable[],textp2[],textp3[],textp4[],textp5[],textp6[],textp7[],textp8[],
-	out1p[],out2p[],out3p[],out4p[],texto3[];
+	textp9[],textp10[],textp11[],textp12[],textp13[],textp14[],textp15[],
+	out1p[],out2p[],out3p[],out4p[],out5p[],out6p[],out7p[],out8p[],
+	out9p[],out10p[],out11p[],out12p[],
+	texto3[];
 	Polygon triangle;
 	Font plusFont;
 	Font lablefont;
@@ -205,6 +258,14 @@ class ECUElm extends CircuitElm implements ClickHandler{
 	    out2p = newPointArray(2);
 	    out3p = newPointArray(2);
 	    out4p = newPointArray(2);
+	    out5p = newPointArray(2);
+	    out6p = newPointArray(2);
+	    out7p = newPointArray(2);
+	    out8p = newPointArray(2);
+	    out9p = newPointArray(2);
+	    out10p = newPointArray(2);
+	    out11p = newPointArray(2);
+	    out12p = newPointArray(2);
 	    
 	    
 	    textp = newPointArray(2);
@@ -215,6 +276,13 @@ class ECUElm extends CircuitElm implements ClickHandler{
 	    textp6 = newPointArray(2);
 	    textp7 = newPointArray(2);
 	    textp8 = newPointArray(2);
+	    textp9 = newPointArray(2);
+	    textp10 = newPointArray(2);
+	    textp11 = newPointArray(2);
+	    textp12 = newPointArray(2);
+	    textp13 = newPointArray(2);
+	    textp14 = newPointArray(2);
+	    textp15 = newPointArray(2);
 	    lable = newPointArray(1);
 	    texto3 = newPointArray(1);
 	  //draw point start
@@ -242,16 +310,26 @@ class ECUElm extends CircuitElm implements ClickHandler{
 	    // draw output begin
 	    interpPoint2(lead2, point2, out1p[0],  out2p[0], 0, hs*2);
 	    interpPoint2(lead2, point2, out3p[0],  out4p[0], 0, hs*4);
-	    
-	    
+	    interpPoint2(lead2, point2, out5p[0],  out6p[0], 0, hs*6);
+	    interpPoint2(lead2, point2, out7p[0],  out8p[0], 0, hs*8);
+	    interpPoint2(lead2, point2, out9p[0],  out10p[0], 0, hs*10);
+	    interpPoint2(lead2, point2, out11p[0],  out12p[0], 0, hs*12);
 	    // draw output end
 	    
 	    interpPoint2(lead2, point2, out1p[1],  out2p[1], 1, hs*2);
 	    interpPoint2(lead2, point2, out3p[1],  out4p[1], 1, hs*4);
+	    interpPoint2(lead2, point2, out5p[1],  out6p[1], 1, hs*6);
+	    interpPoint2(lead2, point2, out7p[1],  out8p[1], 1, hs*8);
+	    interpPoint2(lead2, point2, out9p[1],  out10p[1], 1, hs*10);
+	    interpPoint2(lead2, point2, out11p[1],  out12p[1], 1, hs*12);
 	    
 	    // draw lable output
 	    interpPoint2(lead2, point2, textp7[0],  textp7[1], -0.3, hs*2);
 	    interpPoint2(lead2, point2, textp8[0],  textp8[1], -0.3, hs*4);
+	    interpPoint2(lead2, point2, textp9[0],  textp9[1], -0.3, hs*6);
+	    interpPoint2(lead2, point2, textp10[0],  textp10[1], -0.3, hs*8);
+	    interpPoint2(lead2, point2, textp11[0],  textp11[1], -0.3, hs*10);
+	    interpPoint2(lead2, point2, textp12[0],  textp12[1], -0.3, hs*12);
 	    interpPoint(lead2, point2, texto3[0], -0.3);
 	    //
 	    Point rect[] = newPointArray(4);
@@ -265,31 +343,34 @@ class ECUElm extends CircuitElm implements ClickHandler{
 	    plusFont = new Font("SansSerif", 0, opsize == 2 ? 14 : 10);
 	    lablefont = new Font("SansSerif", 1, 20);
 	}
-	int getPostCount() { return 17; }
+	int getPostCount() { return 25; }
 	Point getPost(int n) {
 	    return (n == 0) ? in1p[0] : (n == 1) ? in2p[0] : (n == 2) ?
 		    in3p[0] :(n == 3) ?in4p[0]:(n==4)?in5p[0]:
 		(n==5)?in6p[0]:(n==6)?in7p[0]:(n==7)?
 			in8p[0]:(n==8)?in9p[0]:(n==9)?in10p[0]:
-			    (n==10)?in11p[0]:(n==11)?in12p[0]:(n==12)?point2:(n==13)?out1p[1]:(n==14)?out2p[1]:(n==15)?out3p[1]:out4p[1];
+			    (n==10)?in11p[0]:(n==11)?in12p[0]:(n==12)?point2:(n==13)?out1p[1]:(n==14)?out2p[1]:(n==15)?out3p[1]:
+				(n==16)?out4p[1]:(n==17)?out5p[1]:(n==18)?out6p[1]:(n==19)?out7p[1]:(n==20)?out8p[1]:(n==21)?out9p[1]:(n==22)?out10p[1]:(n==23)?out11p[1]:out12p[1];
 	    //return (n == 0) ? in1p[0] : (n == 1) ? in2p[0] : (n == 2) ?in3p[0] :(n == 3) ?in4p[0]:(n == 4) ?in5p[0]:point2;
 	}
 	//int getVoltageSourceCount() { return 1; }
 	void getInfo(String arr[]) {
 	    arr[0] = "ECU";
-	    arr[1] = "V1 = " + getVoltageText(volts[0]);
-	    arr[2] = "V2 = " + getVoltageText(volts[1]);
-	    arr[3] = "V3 = " + getVoltageText(volts[2]);
-	    arr[4] = "V4 = " + getVoltageText(volts[3]);
-	    arr[5] = "V5 = " + getVoltageText(volts[4]);
-	    arr[6] = "V6 = " + getVoltageText(volts[5]);
-	    arr[7] = "V7 = " + getVoltageText(volts[6]);
-	    arr[8] = "V8 = " + getVoltageText(volts[7]);
-	    arr[9] = "V9 = " + getVoltageText(volts[8]);
-	    arr[10] = "V10 = " + getVoltageText(volts[9]);
-	    arr[11] = "V11 = " + getVoltageText(volts[10]);
-	    arr[12] = "V12 = " + getVoltageText(volts[11]);
-	    arr[13] = "V13 = " + getVoltageText(volts[12]);
+	    arr[1] = "count" + teeth_count; 
+	    arr[2] = "volt ckp" + getVoltageText(volts[CKP]); 
+//	    arr[1] = "V1 = " + getVoltageText(volts[0]);
+//	    arr[2] = "V2 = " + getVoltageText(volts[1]);
+//	    arr[3] = "V3 = " + getVoltageText(volts[2]);
+//	    arr[4] = "V4 = " + getVoltageText(volts[3]);
+//	    arr[5] = "V5 = " + getVoltageText(volts[4]);
+//	    arr[6] = "V6 = " + getVoltageText(volts[5]);
+//	    arr[7] = "V7 = " + getVoltageText(volts[6]);
+//	    arr[8] = "V8 = " + getVoltageText(volts[7]);
+//	    arr[9] = "V9 = " + getVoltageText(volts[8]);
+//	    arr[10] = "V10 = " + getVoltageText(volts[9]);
+//	    arr[11] = "V11 = " + getVoltageText(volts[10]);
+//	    arr[12] = "V12 = " + getVoltageText(volts[11]);
+//	    arr[13] = "V13 = " + getVoltageText(volts[12]);
 	    
 	}
 
@@ -298,12 +379,19 @@ class ECUElm extends CircuitElm implements ClickHandler{
 	double min_volt =0;
 	boolean check1 = false;
 	void stamp() {
-	    sim.stampResistor(nodes[CKP], nodes[GND],  1000000);
-	    sim.stampResistor(nodes[GNDNE], nodes[GND],  0.05);
-	    sim.stampResistor(nodes[CMP], nodes[GND],  1000);
+	    sim.stampResistor(nodes[CKP], nodes[GND],  100000);
+	    sim.stampResistor(nodes[GNDNE], nodes[GND],  0.1);
+	    sim.stampResistor(nodes[CMP], nodes[GND],  100000);
 	    sim.stampResistor(nodes[THW], nodes[BATT],  10000);
 	    sim.stampResistor(nodes[E2], nodes[GND],  1000);
 	    sim.stampResistor(nodes[BATT], nodes[VCTPS], 0.005);
+	    sim.stampResistor(nodes[BATT], nodes[VCCVSS], 175000);
+	    sim.stampResistor(nodes[VCCVSS], nodes[GND], 125000);
+	    sim.stampResistor(nodes[GNDVSS],nodes[GND], 0.05);
+	    sim.stampResistor(nodes[EKNK], nodes[GND], 0.005);
+	    sim.stampResistor(nodes[BPLUSIDL], nodes[BATT], 0.005);
+	    sim.stampResistor(nodes[GND], nodes[GND2], 0.05);
+	    sim.stampResistor(nodes[IGF], nodes[GND], 10000);
 	    sim.stampNonLinear(nodes[IGT3]);
 	    sim.stampNonLinear(nodes[IGT1]);
 	    sim.stampNonLinear(nodes[IGT2]);
@@ -311,15 +399,16 @@ class ECUElm extends CircuitElm implements ClickHandler{
 	    sim.stampNonLinear(nodes[BATT]);
 	    sim.stampNonLinear(nodes[GND]);
 	    sim.stampNonLinear(nodes[THW]);
+	    sim.stampNonLinear(nodes[VCCVSS]);
 	    sim.stampNonLinear(nodes[VTA]);
 	    //sim.stampMatrix(nodes[4], vn, 1);
 	}
 	void create_button(){
-	    sim.addWidgetToVerticalPanel(checkecubutton = new Button("Check ECU"));
+	    sim.addWidgetToVerticalPanel(checkecubutton = new Button("Kiểm Tra Ecu"));
 	    checkecubutton.addClickHandler(new ClickHandler(){
 		public void onClick(ClickEvent event) {
 		    
-		    checkecubox = new CheckEcu(round(volts[IGSW],2),round(volts[BATT],2),true,false,round(volts[THW],2),round(volts[VTA],2));
+		    checkecubox = new CheckEcu(round(volts[IGSW],2),round(volts[BATT],2),check_ckp,check_cmp,check_vss,check_knk,round(volts[THW],2),round(volts[VTA],2));
 		    }
 	    });
 	}
@@ -331,6 +420,8 @@ class ECUElm extends CircuitElm implements ClickHandler{
 	    long tmp = Math.round(value);
 	    return (double) tmp / factor;
 	}
+	boolean first_ckp  = false, first_cmp = false,first_vss = false,check_ckp = false,check_cmp = false,check_vss = false, check_knk=false;
+	double first_time,first_time_cmp,first_time_vss;
 	void doStep() {
 //	    double vd = volts[1] - volts[0];
 //	    if (Math.abs(lastvd-vd) > .1)
@@ -358,8 +449,13 @@ class ECUElm extends CircuitElm implements ClickHandler{
 //	    sim.stampMatrix(vn, nodes[4], 1);
 //	    sim.stampRightSide(vn, 10);
 //	  volts[6]=6;
-	    if(volts[BPLUS]>4.5){
-		
+	    if(volts[BPLUS]>11){
+		double timedutycycle ;
+		if(outputvalve) timedutycycle = 0.005;
+		else  timedutycycle = 0.002;
+		if(sim.t % 0.01 > 0 && sim.t % 0.01 < timedutycycle)
+		       sim.stampResistor(nodes[RSD], nodes[BATT], 0.05);
+		   else sim.stampResistor(nodes[RSD], nodes[GND], 0.05);
 		if(teeth_count == 8){
 			if(volts[CKP]>1 ) 
 			    {
@@ -407,12 +503,46 @@ class ECUElm extends CircuitElm implements ClickHandler{
 			//max_amp = sim.t;
 		    }
 		    else check1 = false;
-		    if(volts[CKP]==0) teeth_count = 0;
+		    if(volts[CKP]==0) 
+			{
+			
+			teeth_count = 0;
+			if(first_ckp)
+			{
+			  first_time = sim.t; 
+			  first_ckp = false;
+			}
+			if(sim.t-first_time > 0.04) check_ckp = false;
+			else check_ckp = true;
+			}
+		    else first_ckp = true;
+		    if(volts[CMP]==0){
+			if(first_cmp)
+			{
+			  first_time_cmp = sim.t; 
+			  first_cmp = false;
+			}
+			if(sim.t-first_time_cmp > 0.06) check_cmp = false;
+			else check_cmp = true;
+			}
+		    else first_cmp = true;
+		    if(volts[OUTVSS]==0){
+			if(first_vss)
+			{
+			  first_time_vss = sim.t; 
+			  first_vss = false;
+			}
+			if(sim.t-first_time_vss > 0.06) check_vss = false;
+			else check_vss = true;
+			}
+		    else first_vss = true;
+		    if(volts[KNK1] !=0 && volts[EKNK]==0) check_knk = true;
+		    else check_knk = false;
 	    }
 	    
 	    
 	    
-	    if(volts[IGSW] >4.5 )sim.stampResistor(nodes[BATT], nodes[MREL], 10);
+	    if(volts[IGSW] >11.5 )sim.stampResistor(nodes[BATT], nodes[MREL], 10);
 	    else sim.stampResistor(nodes[IGSW], nodes[GND], 10);
 	    
 	    
@@ -430,15 +560,16 @@ class ECUElm extends CircuitElm implements ClickHandler{
 	//double getVoltageDiff() { return volts[2] - volts[1]; }
 	int getDumpType() { return 'E'; }
 	public EditInfo getEditInfo(int n) {
-//	    if (n == 0)
-//		return new EditInfo("Max Output (V)", maxOut, 1, 20);
-//	    if (n == 1)
-//		return new EditInfo("Min Output (V)", minOut, -20, 0);
-//	    if (n == 2)
-//		return new EditInfo("Gain", gain, 10, 1000000);
+            if(n==0){
+        	EditInfo ei = new EditInfo("", 0, -1, -1);
+    	    ei.checkbox = new Checkbox("mở van / đóng van", outputvalve);
+    	    return ei;
+            }
 	    return null;
 	}
 	public void setEditValue(int n, EditInfo ei) {
+	    if(n == 0) outputvalve = ei.checkbox.getState();
+		
 //	    if (n == 0)
 //		maxOut = ei.value;
 //	    if (n == 1)
@@ -457,9 +588,29 @@ class ECUElm extends CircuitElm implements ClickHandler{
 	    // TODO Auto-generated method stub
 	    
 	}
+	void reset() {
+		int i;
+		for (i = 0; i != getPostCount()+getInternalNodeCount(); i++)
+		    volts[i] = 0;
+		curcount = 0;
+		teeth_count =0;
+	    }
 	
 	void delete() {
 		sim.removeWidgetFromVerticalPanel(checkecubutton);
 	        super.delete();
+	    }
+	 public Boolean checkInfor(){return true;}
+	    String codeHtmlString = "<div style='overflow-y: scroll; height:400px;'>"
+	    	+ "<img src='https://i0.wp.com/gomechanic.in/blog/wp-content/uploads/2020/10/ecu_steuergeraet_epd_thumbnail.jpg?resize=696%2C392&ssl=1' alt='ECU' height='300'>"
+	    	+ "<h3>ECU LÀ GÌ?</h3>"
+	    	+ "<p>ECU là một hệ thống điều khiển điện tử của xe ôtô và là tên viết tắt của từ Electronic Control Unit. Để dễ hiểu và dễ hình dung hơn bạn có thể hiểu ECU chính là phần hộp đen, được ví như một “bộ não” có thể tiếp nhận thông tin, chi phối và ghi lại các hoạt động của xe ôtô. Nếu bạn là tín đồ của các bộ phim hình sự, thì sẽ không thể quên được các chi tiết phá án của cảnh sát, cần sử dụng đến hộp đen ôtô để làm bằng chứng, đó chính là ECU.</p>"
+	    	+ "<h3>Nguyên lý hoạt động của ECU</h3>"
+	    	+ "<p>ECU hoạt động được một phần là do cảm biến tốc độ của động cơ và các vị trí piston. Sự phụ thuộc lẫn nhau này sẽ hỗ trợ và giúp ECU có thể xác định được chính xác mọi thời điểm phun xăng, đánh lửa để tạo ra khả năng tiết kiệm nhiên liệu và hiệu suất xe được tốt nhất.</p>"
+	    	+ "<p>ECU còn có quá trình tính toán để đưa ra các góc đánh lửa theo các chế độ hoạt động khác nhau của động cơ phụ thuộc vào các loại cảm biến hóa. Ngoài ra, ECU còn có vai trò làm giảm khí thải ra môi trường nhờ các hoạt động của cảm biến Oxy xác định phần hòa khí tức thời. </p>"
+	    	+ "<img src='https://tinbanxe.vn/uploads/news/2020_04/nguyen-ly-hoat-dong-cua-ecu.jpg' alt='ECU2' height='300'>"
+	    	+ "</div>";
+	    public String CodeHtml(){
+		return codeHtmlString;
 	    }
     }

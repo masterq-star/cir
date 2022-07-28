@@ -77,6 +77,7 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
@@ -88,6 +89,7 @@ import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.storage.client.Storage;
+import com.google.gwt.thirdparty.javascript.jscomp.Scope.Var;
 import com.google.gwt.user.client.ui.PopupPanel;
 import static com.google.gwt.event.dom.client.KeyCodes.*;
 import com.google.gwt.user.client.ui.Frame;
@@ -131,6 +133,7 @@ MouseOutHandler, MouseWheelHandler {
     private Scrollbar powerBar;
     MenuBar elmMenuBar;
     MenuItem elmEditMenuItem;
+    MenuItem elminformationItem;
     MenuItem elmCutMenuItem;
     MenuItem elmCopyMenuItem;
     MenuItem elmDeleteMenuItem;
@@ -224,6 +227,7 @@ MouseOutHandler, MouseWheelHandler {
     CircuitElm plotXElm, plotYElm;
     int draggingPost;
     SwitchElm heldSwitchElm;
+    KnkElm heldknkelm;
     double circuitMatrix[][], circuitRightSide[], lastNodeVoltages[], nodeVoltages[],
 	origRightSide[], origMatrix[][];
     RowInfo circuitRowInfo[];
@@ -244,6 +248,7 @@ MouseOutHandler, MouseWheelHandler {
     static ScrollValuePopup scrollValuePopup;
     static DialogBox dialogShowing;
     static AboutBox aboutBox;
+    static Inforpage information;
     static ImportFromDropboxDialog importFromDropboxDialog;
 //    Class dumpTypes[], shortcuts[];
     String shortcuts[];
@@ -269,6 +274,7 @@ MouseOutHandler, MouseWheelHandler {
 
 	LoadFile loadFileInput;
 	Frame iFrame;
+	Image image;
 	
     Canvas cv;
     Context2d cvcontext;
@@ -623,7 +629,7 @@ MouseOutHandler, MouseWheelHandler {
 
 	// was max of 140
 	verticalPanel.add( speedBar = new Scrollbar(Scrollbar.HORIZONTAL, 3, 1, 0, 260));
-
+        speedBar.addStyleName("customscroll");
 	verticalPanel.add( l = new Label(LS("Current Speed")));
 	l.addStyleName("topSpace");
 	currentBar = new Scrollbar(Scrollbar.HORIZONTAL, 50, 1, 1, 100);
@@ -633,6 +639,9 @@ MouseOutHandler, MouseWheelHandler {
 	verticalPanel.add(powerBar = new Scrollbar(Scrollbar.HORIZONTAL,
 		50, 1, 1, 100));
 	setPowerBarEnable();
+	verticalPanel.add(image = new Image());
+	image.setWidth("160px");
+	image.setUrl("http://hbhanoi.com/wp-content/uploads/2021/03/z2404963907257_a2d939259bd5af891b2748b7c340f039.jpg");
 
 	//	verticalPanel.add(new Label(""));
 	//        Font f = new Font("SansSerif", 0, 10);
@@ -640,14 +649,15 @@ MouseOutHandler, MouseWheelHandler {
 	l.addStyleName("topSpace");
 	//        l.setFont(f);
 	titleLabel = new Label("Label");
+	titleLabel.addStyleName("topSpace");
 	//        titleLabel.setFont(f);
 	verticalPanel.add(l);
 	verticalPanel.add(titleLabel);
-
-	verticalPanel.add(iFrame = new Frame("iframe.html"));
-	iFrame.setWidth(VERTICALPANELWIDTH+"px");
-	iFrame.setHeight("100 px");
-	iFrame.getElement().setAttribute("scrolling", "no");
+	
+	//verticalPanel.add(iFrame = new Frame("iframe.html"));
+//	iFrame.setWidth(VERTICALPANELWIDTH+"px");
+//	iFrame.setHeight("100 px");
+//	iFrame.getElement().setAttribute("scrolling", "yes");
 
 	setGrid();
 	elmList = new Vector<CircuitElm>();
@@ -669,6 +679,7 @@ MouseOutHandler, MouseWheelHandler {
 	elmMenuBar.setAutoOpen(true);
 	selectScopeMenuBar = new MenuBar(true);
 	elmMenuBar.addItem(elmEditMenuItem = new MenuItem(LS("Edit..."),new MyCommand("elm","edit")));
+	elmMenuBar.addItem(elminformationItem = new MenuItem(LS("Information"),new MyCommand("elm","infor")));
 	elmMenuBar.addItem(elmScopeMenuItem = new MenuItem(LS("View in New Scope"), new MyCommand("elm","viewInScope")));
 	elmMenuBar.addItem(elmFloatScopeMenuItem  = new MenuItem(LS("View in New Undocked Scope"), new MyCommand("elm","viewInFloatScope")));
 	elmMenuBar.addItem(elmAddScopeMenuItem = new MenuItem(LS("Add to Existing Scope"), new MyCommand("elm", "addToScope0")));
@@ -1056,10 +1067,20 @@ MouseOutHandler, MouseWheelHandler {
     	
     	MenuBar hbsimulator = new MenuBar(true);
     	hbsimulator.addItem(getClassCheckItem(LS("ADD CKP"), "CKPSenSor"));
-    	hbsimulator.addItem(getClassCheckItem(LS("ADD CKP 2 TERMINAL"), "CKPElm"));
-    	hbsimulator.addItem(getClassCheckItem(LS("ADD CMP 2 TERMINAL"), "CMPElm"));
+    	hbsimulator.addItem(getClassCheckItem(LS("ADD CKP Sin 2 TERMINAL"), "CKPElm"));
+    	hbsimulator.addItem(getClassCheckItem(LS("ADD CKP Square 2 TERMINAL"), "CkpSquare"));
+    	hbsimulator.addItem(getClassCheckItem(LS("ADD CMP Square 2 TERMINAL"), "CMPElm"));
+    	hbsimulator.addItem(getClassCheckItem(LS("ADD CMP Sin 2 TERMINAL"), "CmpSin"));
     	hbsimulator.addItem(getClassCheckItem(LS("ADD THW 2 TERMINAL"), "THWSensor"));
+    	hbsimulator.addItem(getClassCheckItem(LS("ADD KNOCK 2 TERMINAL"), "KnkElm"));
+    	hbsimulator.addItem(getClassCheckItem(LS("ADD VSS"), "VssElm"));
+    	hbsimulator.addItem(getClassCheckItem(LS("ADD IDL VALVE"),"idlvalve"));
+    	hbsimulator.addItem(getClassCheckItem(LS("ADD IDL Map Sensor"),"MapSensor"));
+    	hbsimulator.addItem(getClassCheckItem(LS("ADD IDL Oxy Sensor"),"OxySensor"));
+    	hbsimulator.addItem(getClassCheckItem(LS("ADD Bobin"), "Bobinelm"));
+    	hbsimulator.addItem(getClassCheckItem(LS("ADD VVTI"), "VvtiElm"));
     	hbsimulator.addItem(getClassCheckItem(LS("ADD ECU"), "ECUElm"));
+    	hbsimulator.addItem(getClassCheckItem(LS("ADD ECU 2"), "ECUElm2"));
     	
     	mainMenuBar.addItem(SafeHtmlUtils.fromTrustedString(CheckboxMenuItem.checkBoxHtml+LS("&nbsp;</div>Hb Simulator")), hbsimulator);
     	
@@ -1275,6 +1296,7 @@ MouseOutHandler, MouseWheelHandler {
 	    CircuitElm.whiteColor = Color.white;
 	    CircuitElm.lightGrayColor = Color.lightGray;
 	    g.setColor(Color.black);
+	    //g.setColor(Color.background_customcolor);
 	}
 	g.fillRect(0, 0, g.context.getCanvas().getWidth(), g.context.getCanvas().getHeight());
 	myrunstarttime=System.currentTimeMillis();
@@ -1486,6 +1508,9 @@ MouseOutHandler, MouseWheelHandler {
 //	g.drawString("ms per frame (other): "+ CircuitElm.showFormat.format((mytime-myruntime-mydrawtime)/myframes),10,110);
 //	g.drawString("ms per frame (sim): "+ CircuitElm.showFormat.format((myruntime)/myframes),10,130);
 //	g.drawString("ms per frame (draw): "+ CircuitElm.showFormat.format((mydrawtime)/myframes),10,150);
+	
+	
+
 	
 	cvcontext.drawImage(backcontext.getCanvas(), 0.0, 0.0);
 	
@@ -3001,6 +3026,8 @@ MouseOutHandler, MouseWheelHandler {
     	    setCircuitScale(1);
     	if (menu=="elm" && item=="edit")
     		doEdit(menuElm);
+    	if (menu=="elm" && item=="infor")
+		information = new Inforpage(menuElm.CodeHtml());
     	if (item=="delete") {
     		if (menu!="elm")
     			menuElm = null;
@@ -4205,6 +4232,7 @@ MouseOutHandler, MouseWheelHandler {
     	    	    	elmAddScopeMenuItem.setEnabled(mouseElm.canViewInScope() );
     	    	    }
     	    	    elmEditMenuItem .setEnabled(mouseElm.getEditInfo(0) != null);
+    	    	    elminformationItem.setEnabled(mouseElm.checkInfor() != false && mouseElm.CodeHtml() !="");
     	    	    elmFlipMenuItem .setEnabled(mouseElm.getPostCount() == 2);
     	    	    elmSplitMenuItem.setEnabled(canSplit(mouseElm));
     	    	    elmSliderMenuItem.setEnabled(sliderItemEnabled(mouseElm));
@@ -5247,6 +5275,16 @@ MouseOutHandler, MouseWheelHandler {
 	case 418: return new CKPElm(x1, y1, x2, y2,f , st);
 	case 419: return new CMPElm(x1, y1, x2, y2, f, st);
 	case 420: return new THWSensor(x1, y1, x2, y2, f, st);
+	case 421: return new KnkElm(x1, y1, x2, y2, f, st);
+	case 422: return new VssElm(x1, y1, x2, y2, f, st);
+	case 423: return new CkpSquare(x1, y1, x2, y2, f, st);
+	case 424: return new CmpSin(x1, y1, x2, y2, f, st);
+	case 425: return new idlvalve(x1, y1, x2, y2, f, st);
+	case 426: return new ECUElm2(x1, y1, x2, y2, f, st);
+	case 427: return new MapSensor(x1, y1, x2, y2, f, st);
+	case 428: return new OxySensor(x1, y1, x2, y2, f, st);
+	case 429: return new Bobinelm(x1, y1, x2, y2, f, st);
+	case 430: return new VvtiElm(x1, y1, x2, y2, f, st);
         }
     	return null;
     }
@@ -5505,10 +5543,28 @@ MouseOutHandler, MouseWheelHandler {
     	    return (CircuitElm) new CMPElm(x1, y1);
     	if(n=="ECUElm")
     	    return (CircuitElm) new ECUElm(x1, y1);
+    	if(n=="ECUElm2")
+    	    return (CircuitElm) new ECUElm2(x1, y1);
     	if(n=="THWSensor")
     	    return (CircuitElm) new THWSensor(x1, y1);
-    	
-    	
+    	if(n=="KnkElm")
+    	    return (CircuitElm) new KnkElm(x1, y1);
+    	if(n=="VssElm")
+    	    return (CircuitElm) new VssElm(x1, y1);
+    	if(n == "CkpSquare")
+    	    return (CircuitElm) new CkpSquare(x1, y1);
+    	if(n == "CmpSin")
+    	    return (CircuitElm) new CmpSin(x1, y1);
+    	if(n == "idlvalve")
+    	    return (CircuitElm) new idlvalve(x1, y1);
+    	if(n=="MapSensor")
+    	    return (CircuitElm) new MapSensor(x1, y1);
+    	if(n=="OxySensor")
+    	    return (CircuitElm) new OxySensor(x1, y1);
+    	if(n=="Bobinelm")
+    	    return (CircuitElm) new Bobinelm(x1, y1);
+    	if(n=="VvtiElm")
+    	    return (CircuitElm) new VvtiElm(x1, y1);
     	return null;
     }
     
